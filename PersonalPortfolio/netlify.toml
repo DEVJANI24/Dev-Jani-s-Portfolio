@@ -1,0 +1,28 @@
+[build]
+  command = "npm run build"
+  functions = "netlify/functions"
+  publish = "client/dist"
+
+[functions]
+  external_node_modules = ["express", "drizzle-orm", "@neondatabase/serverless"]
+  node_bundler = "esbuild"
+
+# Redirect all /api calls to your serverless function
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/api/:splat"
+  status = 200
+  force = true
+
+# Handle React Router (SPA routing)
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+# Handle static assets
+[[redirects]]
+  from = "/attached_assets/*"
+  to = "/attached_assets/:splat"
+  status = 200
+  force = true
